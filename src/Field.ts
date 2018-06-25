@@ -13,6 +13,8 @@ export class Field {
         this.canvas = e;
         this.context = this.canvas.getContext('2d');
         this.context.globalCompositeOperation = "source-over";
+        this.size = {width: 0, height: 0};
+        this.components = [];
         setInterval(() => this.draw(), 33);
     }
 
@@ -25,8 +27,12 @@ export class Field {
     }
 
     resize(parent) {
-        this.size.width = this.canvas.width = parent.clientWidth;
-        this.size.height = this.canvas.height = parent.clientHeight;
+        const width = parent.clientWidth;
+        const height = parent.clientHeight;
+        this.size.width = width;
+        this.canvas.width = width;
+        this.size.height = height;
+        this.canvas.height = height;
     }
 
     add(component) {
@@ -35,6 +41,7 @@ export class Field {
 
     draw() {
         this.clear();
+        if (this.components.length < 1) return;
         this.components.forEach(component => {
             component.move(this.size);
             component.draw(this.context);
